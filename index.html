@@ -169,12 +169,47 @@
   }
   .ledger-foot a{font-weight:500}
 
-  /* insurance */
-  .dms{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.35fr);gap:clamp(1.6rem,4vw,3.5rem)}
-  .dms .cols{columns:3;column-gap:1.8rem;font-size:.95rem;color:var(--ink-soft)}
-  .dms .cols li{break-inside:avoid;padding-block:.18rem;list-style:none}
-  .dms .cols li::before{content:"";display:inline-block;width:.5rem;height:1px;background:var(--folio);vertical-align:middle;margin-right:.55rem}
-  .dms-note{margin-top:1rem;font-size:.9rem;color:var(--ink-soft)}
+  /* insurance — ДМС: большое свободное поле на белом */
+  .dms{
+    position:relative;overflow:hidden;
+    background:var(--paper);border-radius:28px;
+    padding:clamp(2.2rem,6vw,4.6rem) clamp(1.8rem,6vw,5rem);
+  }
+  .dms::before{ /* гигантская, но тихая монограмма — цвет porcelain на белом */
+    content:"ДМС";position:absolute;top:-.4em;right:-.1em;z-index:0;
+    font:900 clamp(7rem,17vw,13rem)/1 var(--serif);
+    color:var(--porcelain);pointer-events:none;user-select:none;
+  }
+  .dms-in{
+    position:relative;z-index:1;
+    display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.25fr);
+    gap:clamp(2rem,5vw,4.5rem);align-items:center;
+  }
+  .dms h2{font-size:clamp(2.05rem,4.4vw,3rem);margin-bottom:1rem}
+  .dms .prose{font-size:1.05rem}
+  .dms-label{
+    font-size:.84rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+    color:var(--coach);margin-bottom:1.1rem;
+  }
+  .dms-co{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(11rem,1fr));
+    gap:.6rem;
+  }
+  .dms-co li{
+    list-style:none;text-align:center;
+    background:var(--porcelain);border-radius:999px;
+    padding:.62rem 1.1rem;font-size:.95rem;font-weight:500;color:var(--ink);
+    transition:transform .18s ease,background-color .18s ease,color .18s ease;
+  }
+  @media (hover:hover){.dms-co li:hover{transform:translateY(-2px)}}
+  .dms-co li:hover{background:var(--menthol);color:var(--coach)}
+  .dms-co li.more{background:none;border:1px dashed var(--folio);color:var(--ink-soft);font-style:italic}
+  .dms-note{
+    position:relative;z-index:1;
+    margin-top:clamp(1.6rem,4vw,2.6rem);padding-top:1.4rem;
+    border-top:1px solid var(--folio);
+    font-size:.92rem;color:var(--ink-soft);
+  }
 
   /* team — портреты в белых полях */
   .team{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.9rem}
@@ -223,8 +258,8 @@
   @media (max-width:880px){
     .hero{grid-template-columns:1fr}
     .plate{order:-1;width:min(100%,380px)}
-    .dms{grid-template-columns:1fr}
-    .dms .cols{columns:2}
+    .dms-in{grid-template-columns:1fr;gap:2rem}
+    .dms-co{grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr))}
     .team{grid-template-columns:repeat(2,minmax(0,1fr))}
     .contacts{grid-template-columns:1fr}
     .lgroup{padding:1.5rem 1.2rem 1.7rem}
@@ -232,7 +267,7 @@
     .contacts{padding:1.2rem 1.2rem 1.4rem}
   }
   @media (max-width:520px){
-    .dms .cols{columns:1}
+    .dms-co{grid-template-columns:repeat(auto-fill,minmax(8.5rem,1fr))}
     .team{grid-template-columns:1fr}
   }
   @media (prefers-reduced-motion:reduce){
@@ -242,6 +277,7 @@
     .faq summary::after{transition:none}
     .row{transition:none}
     .team figure img{transition:none}
+    .dms-co li{transition:none}
   }
 </style>
 </head>
@@ -380,32 +416,37 @@
   <!-- ДМС -->
   <section id="dms">
     <div class="dms">
-      <div>
-        <h2>Лечим по ДМС</h2>
-        <p class="prose">Работаем с добровольным медицинским страхованием. Если ваша компания оформила вам полис, счёт за лечение выставляется страховой — напрямую или через возмещение, это зависит от правил вашей программы.</p>
-        <p class="dms-note">Перед визитом уточните в своей страховой, входит ли наш адрес в её сеть, и возьмите с собой полис и паспорт.</p>
+      <div class="dms-in">
+        <div>
+          <h2>Лечим по ДМС</h2>
+          <p class="prose">Работаем с добровольным медицинским страхованием. Если ваша компания оформила вам полис, счёт за лечение выставляется страховой — напрямую или через возмещение, это зависит от правил вашей программы.</p>
+        </div>
+        <div>
+          <p class="dms-label">Взаиморасчёты ведём с 18 страховыми и банками</p>
+          <ul class="dms-co">
+            <li>АльфаСтрахование</li>
+            <li>Зетта Страхование</li>
+            <li>РЕСО-Гарантия</li>
+            <li>Ингосстрах</li>
+            <li>Росгосстрах</li>
+            <li>Совкомбанк</li>
+            <li>ВСК</li>
+            <li>Согаз</li>
+            <li>Согласие</li>
+            <li>Лучи Здоровье</li>
+            <li>Абсолют</li>
+            <li>Югория</li>
+            <li>МАКС</li>
+            <li>МЛДЦ-НТ</li>
+            <li>Регион-Медсервис</li>
+            <li>Энергогарант</li>
+            <li>Либерти</li>
+            <li>Медэкспресс</li>
+            <li class="more">и другие</li>
+          </ul>
+        </div>
       </div>
-      <ul class="cols">
-        <li>АльфаСтрахование</li>
-        <li>Зетта Страхование</li>
-        <li>РЕСО-Гарантия</li>
-        <li>Ингосстрах</li>
-        <li>Росгосстрах</li>
-        <li>Совкомбанк</li>
-        <li>ВСК</li>
-        <li>Согаз</li>
-        <li>Согласие</li>
-        <li>Лучи Здоровье</li>
-        <li>Абсолют</li>
-        <li>Югория</li>
-        <li>МАКС</li>
-        <li>МЛДЦ-НТ</li>
-        <li>Регион-Медсервис</li>
-        <li>Энергогарант</li>
-        <li>Либерти</li>
-        <li>Медэкспресс</li>
-        <li>и другие</li>
-      </ul>
+      <p class="dms-note">Перед визитом уточните в своей страховой, входит ли наш адрес в её сеть, и возьмите с собой полис и паспорт.</p>
     </div>
   </section>
 
