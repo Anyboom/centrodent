@@ -7,7 +7,8 @@
 <meta name="description" content="Лечение, протезирование и удаление зубов в Твери. Открытый прайс-лист от 300 ₽, лечение по ДМС. пн–пт 8–19, выходные 9–16. Телефон +7 (4822) 777-277.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@500;600;700;900&family=Golos+Text:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@500;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
 <style>
   :root{
     --porcelain:#F2F4F1;
@@ -20,7 +21,7 @@
     --menthol-soft:#EDF2EE;
     --folio:#C7D2CB;
     --serif:"Vollkorn", Georgia, serif;
-    --sans:"Golos Text", "Segoe UI", sans-serif;
+    --sans:"Inter", "Golos Text", "Segoe UI", sans-serif;
     --inset:clamp(.5rem, 1.4vw, 1rem); /* отступ «картинки» героя от краёв экрана */
     --wrap:1240px;                     /* ширина типографской сетки внутри панелей */
   }
@@ -36,6 +37,8 @@
   html,body{overflow-x:clip} /* страховка: ни один блок не вылезает по горизонтали */
   a{color:var(--coach);text-decoration-thickness:1px;text-underline-offset:3px}
   a:hover{color:var(--coach-deep)}
+  i.ph{font-size:1.15em;line-height:1;vertical-align:-.18em}
+  .m-call{display:none} /* CTA звона живёт только в мобильной панели меню */
   :focus-visible{outline:2px solid var(--coach);outline-offset:3px;border-radius:2px}
   .wrap{max-width:var(--wrap);margin:0 auto;padding:0 clamp(1.1rem,4vw,2.5rem)}
   section{margin-block:clamp(4rem,8vw,6.8rem)}
@@ -313,6 +316,7 @@
     background:var(--paper);border-radius:18px;padding:1.6rem 2.2rem 1.8rem;
   }
   .contacts > div{padding-block:1.3rem}
+  .contacts dt i.ph{color:var(--coach);margin-right:.45rem;vertical-align:-.14em;opacity:.9}
   .contacts dt{font-size:.85rem;color:var(--ink-soft);margin-bottom:.35rem}
   .contacts dd{font:600 1.15rem/1.45 var(--sans)}
   .contacts dd small{display:block;font-weight:400;font-size:.9rem;color:var(--ink-soft)}
@@ -372,7 +376,7 @@
       <a href="#vrachi">Врачи</a>
       <a href="#voprosy">Вопросы</a>
       <a href="#kontakty">Контакты</a>
-      <a class="m-call" href="tel:+74822777277">+7 (4822) 777-277</a>
+      <a class="m-call" href="tel:+74822777277"><i class="ph ph-phone" aria-hidden="true"></i> +7 (4822) 777-277</a>
     </nav>
     <a class="call" href="tel:+74822777277">+7 (4822) 777-277</a>
     <button class="burger" type="button" aria-expanded="false" aria-controls="main-menu" aria-label="Открыть меню">
@@ -391,9 +395,9 @@
     <div>
       <h1>Цену называем до начала лечения — и потом не меняем</h1>
       <p class="lead">Лечим кариес, пульпит, ставим коронки и протезы за фиксированную плату. Полный прайс-лист открыт на сайте с фильтрами — осмотр стоит 300&nbsp;₽, и с него можно начать.</p>
-      <p class="hero-actions">
-        <a class="btn btn-solid" href="tel:+74822777277">Записаться на осмотр</a>
-        <a class="btn btn-ghost" href="#ceny">Смотреть цены</a>
+        <p class="hero-actions">
+        <a class="btn btn-solid" href="tel:+74822777277"><i class="ph ph-phone-outgoing" aria-hidden="true"></i> Записаться на осмотр</a>
+        <a class="btn btn-ghost" href="#ceny"><i class="ph ph-caret-down" aria-hidden="true"></i> Смотреть цены</a>
       </p>
       <p class="status" id="status"><i aria-hidden="true"></i><span>пн–пт 8–19, выходные и праздники 9–16</span></p>
     </div>
@@ -495,7 +499,7 @@
         <div class="row"><span class="n">Съёмный частичный протез</span><span class="dots" aria-hidden="true"></span><span class="p">22&nbsp;000&nbsp;<small>₽</small></span></div>
         <div class="row"><span class="n">Бюгельный протез</span><span class="dots" aria-hidden="true"></span><span class="p">32&nbsp;500&nbsp;<small>₽</small></span></div>
       </div>
-      <p class="ledger-foot">В стоимость коронок и протезов заложены слепки и фиксация, анестезия считается отдельно. Ортопедические работы, выполненные ускоренно, стоят вдвое дороже. <a href="ceny.html">Полный прайс-лист — с поиском и фильтрами по разделам</a>.</p>
+      <p class="ledger-foot">В стоимость коронок и протезов заложены слепки и фиксация, анестезия считается отдельно. Ортопедические работы, выполненные ускоренно, стоят вдвое дороже. <a href="ceny.html"><i class="ph ph-magnifying-glass" aria-hidden="true"></i> Полный прайс-лист — с поиском и фильтрами по разделам</a>.</p>
     </div>
   </section>
 
@@ -532,7 +536,7 @@
           </ul>
         </div>
       </div>
-      <p class="dms-note">Перед визитом уточните в своей страховой, входит ли наш адрес в её сеть, и возьмите с собой полис и паспорт.</p>
+      <p class="dms-note"><i class="ph ph-info" aria-hidden="true"></i> Перед визитом уточните в своей страховой, входит ли наш адрес в её сеть, и возьмите с собой полис и паспорт.</p>
     </div>
   </section>
 
@@ -616,26 +620,26 @@
     <h2>Как нас найти</h2>
     <dl class="contacts">
       <div class="wide big">
-        <dt>Записаться на приём</dt>
+        <dt><i class="ph ph-phone" aria-hidden="true"></i> Записаться на приём</dt>
         <dd>
           <a href="tel:+74822777277">+7 (4822) 777-277</a> <small>стационарный</small>
           <a href="tel:+79092651919">+7 (909) 265-19-19</a> <small>мобильный</small>
         </dd>
       </div>
       <div>
-        <dt>Адрес</dt>
+        <dt><i class="ph ph-map-pin" aria-hidden="true"></i> Адрес</dt>
         <dd>Тверь, ул. Лидии Базановой, 20 <small><a href="https://yandex.ru/maps/?text=Тверь,%20улица%20Лидии%20Базановой,%2020">схема проезда</a></small></dd>
       </div>
       <div>
-        <dt>Почта</dt>
+        <dt><i class="ph ph-envelope" aria-hidden="true"></i> Почта</dt>
         <dd><a href="mailto:mail@sentrodent.ru">mail@sentrodent.ru</a></dd>
       </div>
       <div>
-        <dt>Приём в будни</dt>
+        <dt><i class="ph ph-clock" aria-hidden="true"></i> Приём в будни</dt>
         <dd>Понедельник – пятница, 8:00 – 19:00</dd>
       </div>
       <div>
-        <dt>Приём в выходные и праздники</dt>
+        <dt><i class="ph ph-sun" aria-hidden="true"></i> Приём в выходные и праздники</dt>
         <dd>9:00 – 16:00</dd>
       </div>
     </dl>
