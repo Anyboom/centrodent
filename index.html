@@ -89,7 +89,6 @@
     background:rgba(255,255,255,.86);
     -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
     border-color:rgba(199,210,203,.55);
-    box-shadow:0 14px 32px -16px rgba(23,36,43,.4);
   }
   .topbar.is-scrolled .brand-mark{width:1.9rem;height:1.9rem}
   .topbar.is-scrolled .brand b{font-size:1.3rem}
@@ -101,7 +100,7 @@
   }
   .topbar.is-scrolled .call:hover{color:var(--paper);background:var(--coach-deep)}
   @media (prefers-reduced-motion: no-preference){
-    .topbar-in{transition:margin-top .32s ease,padding .3s ease,background-color .3s ease,border-color .3s ease,box-shadow .3s ease}
+    .topbar-in{transition:margin-top .32s ease,padding .3s ease,background-color .3s ease,border-color .3s ease}
   }
   @media (max-width:980px){
     nav.main{gap:.3rem;font-size:.9rem}
@@ -213,6 +212,39 @@
   h2{font:700 clamp(1.6rem,3vw,2.15rem)/1.2 var(--serif);margin-bottom:1.15rem}
   h3{font:600 1.05rem/1.3 var(--sans);margin-bottom:.5rem}
   .section-lead{margin-bottom:2.05rem;color:var(--ink-soft)}
+
+  /* about — манифест-абзац + слот под фото клиники */
+  .about{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(2.4rem,5vw,4.5rem);align-items:center;
+  }
+  .about-lede{font:600 clamp(1.5rem,3vw,2.1rem)/1.5 var(--serif);color:var(--ink);max-width:30ch;text-wrap:balance;margin-bottom:1.5rem}
+  .about-add{font-size:1.06rem;max-width:56ch;margin:0}
+  .about-photo{
+    position:relative;aspect-ratio:4/3;margin:0;overflow:hidden;
+    border-radius:18px;background:var(--menthol-soft);
+  }
+  .about-photo img{width:100%;height:100%;object-fit:cover;display:block;object-position:50% 38%;filter:saturate(.92)}
+  /* верх кадра растворяется в фарфоровом поле */
+  .about-photo::before{
+    content:"";position:absolute;z-index:1;left:0;right:0;top:0;height:36%;
+    background:linear-gradient(180deg,var(--porcelain),transparent);
+    pointer-events:none;
+  }
+  /* ментоловая плёнка: кадр укладывается в палитру сайта, с зеленью */
+  .about-photo::after{
+    content:"";position:absolute;inset:0;
+    background:rgba(20,107,92,.14);
+    pointer-events:none;
+  }
+  @media (hover:hover){
+    .about-photo img{transition:transform .5s ease}
+    .about-photo:hover img{transform:scale(1.03)}
+  }
+  .about-photo .ph{position:absolute;inset:0;display:none;place-items:center;font-size:3.4rem;color:var(--folio)}
+  .about-photo.is-empty img{display:none}
+  .about-photo.is-empty .ph{display:grid}
+  .about-photo.is-empty::after{display:none}
 
   /* price ledger — разделы на белых полях, без линеек */
   #ceny .ledger{display:flex;flex-direction:column;gap:2.2rem}
@@ -407,6 +439,8 @@
     .hero h1{font-size:clamp(2.05rem,8.4vw,2.9rem)}
     .hero .lead{font-size:1.04rem}
     .plate{order:-1;width:min(100%,330px)}
+    .about{grid-template-columns:1fr;gap:1.9rem}
+    .about-photo{order:2}
     .dms-in{grid-template-columns:1fr;gap:2rem}
     .dms-co{grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr))}
     .team{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -437,6 +471,7 @@
     .row{transition:none}
     .team figure img{transition:none}
     .dms-co li{transition:none}
+    .about-photo img{transition:none}
   }
 </style>
 </head>
@@ -450,6 +485,7 @@
       <b>Центродент</b>
     </a>
     <nav class="main" id="main-menu" aria-label="Разделы страницы">
+      <a href="#onas">О нас</a>
       <a href="ceny.html">Цены</a>
       <a href="#dms">ДМС</a>
       <a href="#vrachi">Врачи</a>
@@ -537,6 +573,23 @@
   </div>
 
   <div class="wrap">
+
+  <!-- О НАС -->
+  <section id="onas">
+    <h2>О нас</h2>
+    <div class="about">
+      <div>
+        <p class="about-lede">Небольшая клиника с открытым прайсом: вас лечат те же врачи, которых вы встретите и в следующий визит.</p>
+        <p class="about-add prose">Список работ и сумма называются до первой инъекции анестезии — и потом не меняются. Терапия, хирургия, ортопедия и детский приём — под одной крышей.</p>
+      </div>
+      <!-- фото: подать так, будто врач объясняет план по снимку; кадр mclinic-krd — заменить на свой, когда будет -->
+      <figure class="about-photo">
+        <img src="img/clinic.jpg" alt="Врач показывает пациенту снимок зубов на экране и объясняет план лечения" loading="lazy">
+        <i class="ph ph-buildings" aria-hidden="true"></i>
+      </figure>
+    </div>
+  </section>
+
   <!-- ЦЕНЫ -->
   <section id="ceny">
     <div class="price-head"><h2>Стоимость услуг</h2> <span class="note">действительна с 1 ноября 2026 г.</span></div>
@@ -732,6 +785,7 @@
       </div>
       <nav class="foot-nav" aria-label="Разделы в подвале">
         <p class="foot-h">Разделы</p>
+        <a href="#onas">О нас</a>
         <a href="ceny.html">Цены</a>
         <a href="#dms">ДМС</a>
         <a href="#vrachi">Врачи</a>
