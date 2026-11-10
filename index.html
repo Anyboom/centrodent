@@ -33,6 +33,7 @@
     -webkit-font-smoothing:antialiased;
   }
   ::selection{background:var(--coach);color:var(--paper)}
+  html,body{overflow-x:clip} /* страховка: ни один блок не вылезает по горизонтали */
   a{color:var(--coach);text-decoration-thickness:1px;text-underline-offset:3px}
   a:hover{color:var(--coach-deep)}
   :focus-visible{outline:2px solid var(--coach);outline-offset:3px;border-radius:2px}
@@ -60,6 +61,23 @@
   nav.main a:hover{color:var(--coach);background:rgba(20,107,92,.08)}
   .topbar .call{font-weight:600;color:var(--coach);text-decoration:none;white-space:nowrap}
   .topbar .call:hover{color:var(--coach-deep)}
+  /* бургер: существует только на мобильных, на десктопе не отрисовывается */
+  .burger{
+    display:none;flex:none;cursor:pointer;
+    width:2.5rem;height:2.5rem;border-radius:999px;
+    border:1px solid var(--folio);background:none;
+    place-items:center;
+  }
+  .burger:hover{border-color:var(--coach)}
+  .burger span{display:flex;flex-direction:column;gap:4.5px}
+  .burger i{display:block;width:17px;height:1.8px;border-radius:2px;background:var(--ink);opacity:.85}
+  .menu-open .burger{border-color:var(--coach)}
+  .menu-open .burger i:nth-child(1){transform:translateY(6.3px) rotate(45deg)}
+  .menu-open .burger i:nth-child(2){opacity:0}
+  .menu-open .burger i:nth-child(3){transform:translateY(-6.3px) rotate(-45deg)}
+  @media (prefers-reduced-motion:no-preference){
+    .burger i{transition:transform .3s ease,opacity .2s ease}
+  }
   /* облачко: отступ от края, стекло-фон, тень — «отделилась» от страницы */
   .topbar.is-scrolled .topbar-in{
     margin-top:calc(var(--inset) - .1rem);
@@ -87,18 +105,42 @@
     nav.main a{padding:.25rem .45rem}
     .topbar-in{gap:.9rem}
   }
-  /* на узких экранах фиксированная шапка со строками-переносами слишком
-     высокая — там она sticky (в потоке, контент не перекрывает) */
+  /* на узких экранах шапка — одна строка с бургером, ссылки живут в выпадающей панели */
   @media (max-width:760px){
     body{padding-top:0}
     .topbar{position:sticky}
-    .topbar-in{gap:.8rem;flex-wrap:wrap;padding-block:.75rem .65rem} /* перенос строк снова нужен */
-    .topbar.is-scrolled .topbar-in{margin-top:calc(var(--inset) - .1rem);padding-block:.6rem;padding-inline:1rem}
+    .topbar-in{
+      gap:.7rem;flex-wrap:nowrap;
+      padding-block:.55rem;
+      margin-top:calc(var(--inset) + .35rem);
+    }
+    .topbar.is-scrolled .topbar-in{margin-top:calc(var(--inset) - .1rem);padding-block:.5rem;padding-inline:1rem}
+    .topbar .call{margin-left:auto;font-size:.9rem}
+    .burger{display:grid}
     .brand b{font-size:1.3rem}
     .topbar.is-scrolled .brand b{font-size:1.18rem}
-    nav.main{gap:.3rem;font-size:.92rem}
-    nav.main a{padding:.3rem .55rem}
-    [id]{scroll-margin-top:10rem}
+    [id]{scroll-margin-top:7rem}
+    nav.main{
+      display:none;
+      position:absolute;top:calc(100% + .35rem);left:.75rem;right:.75rem;z-index:30;
+      flex-direction:column;align-items:stretch;gap:.15rem;
+      background:rgba(255,255,255,.97);
+      -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+      border:1px solid rgba(199,210,203,.6);border-radius:22px;
+      padding:.55rem;box-shadow:0 22px 48px -20px rgba(23,36,43,.45);
+    }
+    .menu-open nav.main{display:flex}
+    nav.main a{padding:.75rem 1rem;border-radius:15px;font-size:1rem}
+    .m-call{
+      display:block;margin-top:.45rem;text-align:center;
+      background:var(--coach);color:var(--paper);
+      padding:.75rem 1rem;border-radius:15px;
+      font-weight:600;text-decoration:none;
+    }
+    .m-call:hover{background:var(--coach-deep);color:var(--paper)}
+  }
+  @media (max-width:480px){
+    .topbar .call{display:none} /* телефон переезжает в меню — строка шапки влезает на 360px */
   }
 
   /* skip link */
@@ -202,7 +244,7 @@
   }
   .dms::before{ /* гигантская, но тихая монограмма — цвет porcelain на белом */
     content:"ДМС";position:absolute;top:-.4em;right:-.1em;z-index:0;
-    font:900 clamp(7rem,17vw,13rem)/1 var(--serif);
+    font:900 clamp(5.5rem,17vw,13rem)/1 var(--serif);
     color:var(--porcelain);pointer-events:none;user-select:none;
   }
   .dms-in{
@@ -281,8 +323,10 @@
   footer .wrap{display:flex;flex-wrap:wrap;gap:.8rem 2rem;justify-content:space-between}
 
   @media (max-width:880px){
-    .hero{grid-template-columns:1fr}
-    .plate{order:-1;width:min(100%,380px)}
+    .hero{grid-template-columns:1fr;gap:2rem;padding-block:4.6rem 3.4rem}
+    .hero h1{font-size:clamp(2.05rem,8.4vw,2.9rem)}
+    .hero .lead{font-size:1.04rem}
+    .plate{order:-1;width:min(100%,330px)}
     .dms-in{grid-template-columns:1fr;gap:2rem}
     .dms-co{grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr))}
     .team{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -293,7 +337,14 @@
   }
   @media (max-width:520px){
     .dms-co{grid-template-columns:repeat(auto-fill,minmax(8.5rem,1fr))}
+    .dms{padding-inline:1.3rem}
+    .row .n{max-width:62%}
+    .hero-actions{gap:.7rem}
+    .hero-actions .btn{flex:1;text-align:center}
     .team{grid-template-columns:1fr}
+    .team .wide{grid-column:auto;grid-template-columns:1fr} /* широкая карточка в одну колонку, сетка не ломается */
+    .team .wide .ph{aspect-ratio:4/3;height:auto}
+    .team .chief b{font-size:1.35rem}
   }
   @media (prefers-reduced-motion:reduce){
     .draw{animation:none;stroke-dashoffset:0}
@@ -315,14 +366,18 @@
       <img class="brand-mark" src="img/logo.png" alt="Логотип «Центродент»" width="34" height="34">
       <b>Центродент</b>
     </a>
-    <nav class="main" aria-label="Разделы страницы">
+    <nav class="main" id="main-menu" aria-label="Разделы страницы">
       <a href="ceny.html">Цены</a>
       <a href="#dms">ДМС</a>
       <a href="#vrachi">Врачи</a>
       <a href="#voprosy">Вопросы</a>
       <a href="#kontakty">Контакты</a>
+      <a class="m-call" href="tel:+74822777277">+7 (4822) 777-277</a>
     </nav>
     <a class="call" href="tel:+74822777277">+7 (4822) 777-277</a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="main-menu" aria-label="Открыть меню">
+      <span aria-hidden="true"><i></i><i></i><i></i></span>
+    </button>
   </div>
 </header>
 
@@ -630,6 +685,21 @@
   var update = function(){ bar.classList.toggle('is-scrolled', window.scrollY > 24); };
   window.addEventListener('scroll', update, {passive:true});
   update();
+})();
+
+/* бургер: одна строка шапки + выпадающая панель ссылок */
+(function(){
+  var bar = document.querySelector('.topbar'), btn = document.querySelector('.burger');
+  if(!bar || !btn) return;
+  var close = function(){ bar.classList.remove('menu-open'); btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-label','Открыть меню'); };
+  btn.addEventListener('click', function(){
+    var open = bar.classList.toggle('menu-open');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+  });
+  bar.addEventListener('click', function(e){ if(e.target.closest('nav.main a')) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+  window.addEventListener('resize', function(){ if(window.innerWidth > 760) close(); }, {passive:true});
 })();
 </script>
 
