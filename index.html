@@ -39,16 +39,64 @@
   p{max-width:62ch}
   .prose{color:var(--ink-soft)}
 
-  /* header */
-  .topbar{background:var(--porcelain)}
-  .topbar-in{display:flex;align-items:baseline;gap:1.4rem;flex-wrap:wrap;padding-block:1rem 0.85rem}
-  .brand{display:flex;align-items:baseline;gap:.8rem;flex-wrap:wrap;text-decoration:none;color:var(--ink)}
+  /* header: fixed, а при скролле строка «отделяется» в плавающее облачко */
+  .topbar{position:fixed;top:0;left:0;right:0;z-index:20}
+  body{padding-top:4.5rem}
+  [id]{scroll-margin-top:6.5rem}
+  .topbar-in{
+    display:flex;align-items:center;gap:1.2rem;flex-wrap:nowrap;
+    padding-block:1.05rem;
+    border:1px solid transparent;border-radius:999px; /* пилюля настраивается заранее, без прыжка */
+  }
+  .topbar .wrap{max-width:1080px}
+  .brand{display:flex;align-items:center;gap:.6rem;text-decoration:none;color:var(--ink)}
+  .brand-mark{display:block;width:2.1rem;height:2.1rem;object-fit:contain}
   .brand b{font:900 1.5rem/1 var(--serif);letter-spacing:.01em}
-  .brand span{font-size:.85rem;color:var(--ink-soft)}
-  nav.main{margin-left:auto;display:flex;gap:1.3rem;flex-wrap:wrap;font-size:.95rem}
-  nav.main a{color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px}
-  nav.main a:hover{border-color:var(--coach);color:var(--coach)}
+  nav.main{margin-left:auto;display:flex;gap:1rem;flex-wrap:wrap;font-size:.95rem}
+  nav.main a{color:var(--ink);text-decoration:none;padding:.3rem .5rem;border-radius:999px;white-space:nowrap}
+  nav.main a:hover{color:var(--coach);background:rgba(20,107,92,.08)}
   .topbar .call{font-weight:600;color:var(--coach);text-decoration:none;white-space:nowrap}
+  .topbar .call:hover{color:var(--coach-deep)}
+  /* облачко: отступ от края, стекло-фон, тень — «отделилась» от страницы */
+  .topbar.is-scrolled .topbar-in{
+    margin-top:.75rem;
+    padding-block:.55rem;
+    padding-inline:1.25rem;
+    background:rgba(255,255,255,.86);
+    -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
+    border-color:rgba(199,210,203,.55);
+    box-shadow:0 14px 32px -16px rgba(23,36,43,.4);
+  }
+  .topbar.is-scrolled .brand-mark{width:1.9rem;height:1.9rem}
+  .topbar.is-scrolled .brand b{font-size:1.3rem}
+  .topbar.is-scrolled nav.main{gap:.5rem}
+  .topbar.is-scrolled nav.main a{padding:.3rem .7rem;font-size:.9rem}
+  .topbar.is-scrolled .call{
+    color:var(--paper);background:var(--coach);
+    padding:.5rem 1.05rem;border-radius:999px;
+  }
+  .topbar.is-scrolled .call:hover{color:var(--paper);background:var(--coach-deep)}
+  @media (prefers-reduced-motion: no-preference){
+    .topbar-in{transition:margin-top .32s ease,padding .3s ease,background-color .3s ease,border-color .3s ease,box-shadow .3s ease}
+  }
+  @media (max-width:980px){
+    nav.main{gap:.3rem;font-size:.9rem}
+    nav.main a{padding:.25rem .45rem}
+    .topbar-in{gap:.9rem}
+  }
+  /* на узких экранах фиксированная шапка со строками-переносами слишком
+     высокая — там она sticky (в потоке, контент не перекрывает) */
+  @media (max-width:760px){
+    body{padding-top:0}
+    .topbar{position:sticky}
+    .topbar-in{gap:.8rem;flex-wrap:wrap;padding-block:.75rem .65rem} /* перенос строк снова нужен */
+    .topbar.is-scrolled .topbar-in{margin-top:.6rem;padding-block:.6rem;padding-inline:1rem}
+    .brand b{font-size:1.3rem}
+    .topbar.is-scrolled .brand b{font-size:1.18rem}
+    nav.main{gap:.3rem;font-size:.92rem}
+    nav.main a{padding:.3rem .55rem}
+    [id]{scroll-margin-top:10rem}
+  }
 
   /* skip link */
   .skip{position:absolute;left:-9999px;top:0;background:var(--ink);color:var(--paper);padding:.6rem 1rem;z-index:10}
@@ -203,8 +251,8 @@
 <header class="topbar">
   <div class="wrap topbar-in">
     <a class="brand" href="#content">
+      <img class="brand-mark" src="img/logo.png" alt="Логотип «Центродент»" width="34" height="34">
       <b>Центродент</b>
-      <span>стоматологическая клиника, Тверь</span>
     </a>
     <nav class="main" aria-label="Разделы страницы">
       <a href="ceny.html">Цены</a>
@@ -501,6 +549,15 @@
   }
   tick();
   setInterval(tick, 60000);
+})();
+
+/* шапка-облачко: при скролле строка отделяется в пилюлю */
+(function(){
+  var bar = document.querySelector('.topbar');
+  if(!bar) return;
+  var update = function(){ bar.classList.toggle('is-scrolled', window.scrollY > 24); };
+  window.addEventListener('scroll', update, {passive:true});
+  update();
 })();
 </script>
 
